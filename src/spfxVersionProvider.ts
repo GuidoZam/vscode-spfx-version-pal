@@ -52,7 +52,7 @@ export class SPFxVersionProvider {
         const spfxInfo = await this.detectSPFxVersion();
         
         if (spfxInfo) {
-            this.statusBarItem.text = `$(package) SPFx ${spfxInfo.version}`;
+            this.statusBarItem.text = `$(milestone) SPFx ${spfxInfo.version}`;
             this.statusBarItem.tooltip = `SharePoint Framework v${spfxInfo.version}\nProject: ${spfxInfo.projectName}\nClick to refresh`;
             this.statusBarItem.show();
         } else {
