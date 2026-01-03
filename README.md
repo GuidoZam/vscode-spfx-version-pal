@@ -4,8 +4,11 @@ A Visual Studio Code extension that displays the SharePoint Framework (SPFx) ver
 
 ## Visual
 
-Example of the extension in action:
-![SPFx Version Pal Screenshot](assets/screenshot.png)
+Examples of the extension in action:
+![SPFx Version Pal Screenshot](assets/screenshot_01.png)
+![SPFx Version Pal Screenshot](assets/screenshot_02.png)
+![SPFx Version Pal Screenshot](assets/screenshot_03.png)
+![SPFx Version Pal Screenshot](assets/screenshot_04.png)
 
 ## Features
 
