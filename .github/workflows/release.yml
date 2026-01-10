@@ -48,6 +48,11 @@ jobs:
     - name: Push version update
       run: git push
 
+    - name: Create Git tag
+      run: |
+        git tag v${{ github.event.inputs.version }}
+        git push origin v${{ github.event.inputs.version }}
+
     - name: Create Release
       uses: actions/create-release@v1
       env:
