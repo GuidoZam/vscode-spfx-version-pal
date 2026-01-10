@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import * as fs from 'fs';
 import * as path from 'path';
-import * as semver from 'semver';
+import { SPFxVersionUtils } from './spfxVersionUtils';
 
 export class SPFxVersionProvider {
     private statusBarItem: vscode.StatusBarItem;
@@ -74,7 +74,7 @@ export class SPFxVersionProvider {
                     const packageJson = JSON.parse(packageJsonContent);
                     
                     // Check if this is an SPFx project
-                    const spfxVersion = this.extractSPFxVersion(packageJson);
+                    const spfxVersion = SPFxVersionUtils.extractSPFxVersion(packageJson);
                     if (spfxVersion) {
                         return {
                             version: spfxVersion,
@@ -88,82 +88,6 @@ export class SPFxVersionProvider {
         }
 
         return null;
-    }
-
-    private extractSPFxVersion(packageJson: any): string | null {
-        // Look for SPFx dependencies in various sections
-        const dependencies = {
-            ...packageJson.dependencies,
-            ...packageJson.devDependencies,
-            ...packageJson.peerDependencies
-        };
-
-        // Common SPFx packages to check for version (in order of preference)
-        const spfxPackages = [
-            '@microsoft/sp-core-library',
-            '@microsoft/sp-webpart-base',
-            '@microsoft/sp-property-pane',
-            '@microsoft/sp-office-ui-fabric-core',
-            '@microsoft/sp-application-base',
-            '@microsoft/generator-sharepoint'
-        ];
-
-        // First pass: Look for exact SPFx packages
-        for (const packageName of spfxPackages) {
-            if (dependencies[packageName]) {
-                const version = dependencies[packageName];
-                const cleanVersion = this.cleanVersionString(version);
-                if (cleanVersion) {
-                    return cleanVersion;
-                }
-            }
-        }
-
-        // Second pass: Check for @types/sharepoint (common in SPFx projects)
-        if (dependencies['@types/sharepoint']) {
-            const version = dependencies['@types/sharepoint'];
-            const cleanVersion = this.cleanVersionString(version);
-            return cleanVersion || 'Unknown';
-        }
-
-        // Third pass: Look for any Microsoft SharePoint related packages
-        const microsoftSpPackages = Object.keys(dependencies).filter(pkg => 
-            pkg.startsWith('@microsoft/sp-') || pkg.includes('sharepoint')
-        );
-
-        for (const packageName of microsoftSpPackages) {
-            const version = dependencies[packageName];
-            const cleanVersion = this.cleanVersionString(version);
-            if (cleanVersion) {
-                return cleanVersion;
-            }
-        }
-
-        return null;
-    }
-
-    private cleanVersionString(version: string): string | null {
-        if (!version) return null;
-        
-        try {
-            // Try semver clean first
-            const cleanVersion = semver.clean(version);
-            if (cleanVersion) {
-                return cleanVersion;
-            }
-        } catch (error) {
-            // Fall back to manual cleaning
-        }
-
-        // Manual version cleaning
-        const versionMatch = version.match(/(\d+\.\d+\.\d+)/);
-        if (versionMatch) {
-            return versionMatch[1];
-        }
-
-        // If no standard version found, return cleaned string
-        const cleaned = version.replace(/[^\d.]/g, '');
-        return cleaned || null;
     }
 
     dispose() {
