@@ -37,15 +37,24 @@ jobs:
       run: npm run lint
       continue-on-error: true
 
-    - name: Run tests
+    - name: Setup virtual display (Linux)
+      if: runner.os == 'Linux'
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y xvfb
+        export DISPLAY=:99
+        Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
+        sleep 3
+
+    - name: Run tests (Linux)
+      if: runner.os == 'Linux'
       run: npm test
       env:
-        DISPLAY: ':99'
-      if: runner.os == 'Linux'
+        DISPLAY: :99
 
     - name: Run tests (Windows/macOS)
-      run: npm test
       if: runner.os != 'Linux'
+      run: npm test
 
   publish:
     name: Publish to Marketplace
