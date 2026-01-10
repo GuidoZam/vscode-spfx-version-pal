@@ -1,92 +1,50 @@
-name: Create Release
+name: Release
 
 on:
-  workflow_dispatch:
-    inputs:
-      version:
-        description: 'Version to release (e.g., 1.0.0)'
-        required: true
-        type: string
-      prerelease:
-        description: 'Is this a pre-release?'
-        required: false
-        default: false
-        type: boolean
-      trigger_cicd:
-        description: 'Trigger CI/CD workflow after release?'
-        required: false
-        default: true
-        type: boolean
+  release:
+    types: [published]
 
 jobs:
-  create-release:
+  deploy:
+    if: github.event.release.prerelease == false
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      pull-requests: write
     
     steps:
-    - name: Checkout code
+    - name: Checkout
       uses: actions/checkout@v4
-      with:
-        token: ${{ github.event.inputs.trigger_cicd == 'true' && secrets.PAT_TOKEN || secrets.GITHUB_TOKEN }}
-        fetch-depth: 0
 
-    - name: Setup Node.js
+    - name: Install Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: '20'
+        node-version: 20
         cache: 'npm'
 
     - name: Install dependencies
       run: npm ci
 
-    - name: Update version in package.json
-      run: |
-        npm version ${{ github.event.inputs.version }} --no-git-tag-version
-        npm install --package-lock-only
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
-        git add package.json package-lock.json
-        git commit -m "Bump version to ${{ github.event.inputs.version }}"
+    - name: Compile
+      run: npm run compile
 
-    - name: Push version update
-      run: git push
+    - name: Lint
+      run: npm run lint
 
-    - name: Create Git tag
-      run: |
-        git tag v${{ github.event.inputs.version }}
-        git push origin v${{ github.event.inputs.version }}
+    - name: Run tests
+      run: xvfb-run -a npm test
 
-    - name: Create Release
-      uses: actions/create-release@v1
+    - name: Package extension
+      run: npm run package
+
+    - name: Publish to VS Code Marketplace
+      run: npm run publish
       env:
-        GITHUB_TOKEN: ${{ github.event.inputs.trigger_cicd == 'true' && secrets.PAT_TOKEN || secrets.GITHUB_TOKEN }}
-      with:
-        tag_name: v${{ github.event.inputs.version }}
-        release_name: Release v${{ github.event.inputs.version }}
-        body: |
-          ## Changes in this release
-          
-          - Automated release for version ${{ github.event.inputs.version }}
-          
-          See the [changelog](CHANGELOG.md) for detailed changes.
-        draft: false
-        prerelease: ${{ github.event.inputs.prerelease }}
+        VSCE_PAT: ${{ secrets.VSCODE_MARKETPLACE_TOKEN }}
 
-    - name: Trigger CI/CD workflow
-      if: github.event.inputs.trigger_cicd == 'true'
-      uses: actions/github-script@v7
+    - name: Upload VSIX as release asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        github-token: ${{ secrets.PAT_TOKEN || secrets.GITHUB_TOKEN }}
-        script: |
-          await github.rest.actions.createWorkflowDispatch({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            workflow_id: 'ci-cd.yml',
-            ref: 'main',
-            inputs: {
-              release_version: '${{ github.event.inputs.version }}'
-            }
-          });
-          console.log('Triggered CI/CD workflow with release version: ${{ github.event.inputs.version }}');
+        upload_url: ${{ github.event.release.upload_url }}
+        asset_path: ./*.vsix
+        asset_name: ${{ github.event.repository.name }}-${{ github.event.release.tag_name }}.vsix
+        asset_content_type: application/zip

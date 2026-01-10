@@ -1,23 +1,30 @@
 # GitHub Actions CI/CD Setup
 
-This repository includes a GitHub Actions workflow that automatically tests and publishes the VS Code extension to the marketplace.
+This repository includes GitHub Actions workflows that automatically test and publish the VS Code extension to the marketplace.
 
 ## Workflow Overview
 
-The CI/CD pipeline includes two main jobs:
+The CI/CD pipeline includes three workflows:
 
-### 1. Test Job
+### 1. CI Workflow (`ci.yml`)
+- Triggers: Push to main/develop, Pull Requests to main
 - Runs on multiple platforms (Ubuntu, Windows, macOS)
 - Tests with Node.js versions 18 and 20
 - Compiles TypeScript
 - Runs ESLint
 - Executes extension tests
 
-### 2. Publish Job
-- Runs only on GitHub releases
-- Packages the extension as .vsix
-- Publishes to VS Code Marketplace
-- Uploads .vsix as release asset
+### 2. Release Workflow (`release.yml`)
+- Triggers: When a GitHub release is published
+- Runs tests, packages, and publishes to VS Code Marketplace
+- Uploads .vsix file as release asset
+- Only runs for non-prerelease releases
+
+### 3. Manual Publish Workflow (`manual-publish.yml`)
+- Triggers: Manual dispatch from GitHub Actions tab
+- Allows publishing with optional version override
+- Supports both regular and pre-release publishing
+- Useful for hotfixes or testing releases
 
 ## Setup Required
 
@@ -43,17 +50,25 @@ VSCODE_MARKETPLACE_TOKEN = your-azure-devops-pat
 
 ## Publishing Process
 
-### Automatic Publishing (Recommended)
+### 1. Automatic Publishing via Release (Recommended)
 
 1. Update version in `package.json`
 2. Create a GitHub release with tag format `v1.0.0`
-3. The workflow will automatically:
+3. The release workflow will automatically:
    - Run tests
    - Package extension
    - Publish to marketplace
    - Upload .vsix to release
 
-### Manual Publishing
+### 2. Manual Publishing via GitHub Actions
+
+1. Go to Actions tab in GitHub repository
+2. Select "Manual Publish" workflow
+3. Click "Run workflow"
+4. Optionally specify version and pre-release flag
+5. The workflow will handle testing and publishing
+
+### 3. Local Manual Publishing
 
 ```bash
 # Install VSCE
@@ -68,9 +83,9 @@ npm run publish
 
 ## Workflow Triggers
 
-- **Push to main**: Runs tests only
-- **Pull Request**: Runs tests only  
-- **Release published**: Runs tests and publishes
+- **CI Workflow**: Push to main/develop, Pull Requests to main
+- **Release Workflow**: GitHub release published (non-prerelease only)
+- **Manual Publish Workflow**: Manual dispatch from Actions tab
 
 ## Requirements
 
