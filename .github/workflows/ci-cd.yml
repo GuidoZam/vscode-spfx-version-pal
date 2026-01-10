@@ -60,6 +60,9 @@ jobs:
     name: Publish to Marketplace
     needs: test
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read
     if: github.event_name == 'release' && github.event.action == 'published'
     
     steps:
