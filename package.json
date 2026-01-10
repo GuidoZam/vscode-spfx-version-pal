@@ -2,7 +2,7 @@
 	"name": "vscode-spfx-version-pal",
 	"displayName": "SPFx Version Pal",
 	"description": "Shows the SharePoint Framework (SPFx) version of the current project in the status bar",
-	"version": "0.0.3",
+	"version": "0.0.4",
 	"publisher": "guidozam",
 	"license": "MIT",
 	"icon": "assets/icon.png",
