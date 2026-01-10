@@ -46,10 +46,10 @@
 	},
 	"scripts": {
 		"vscode:prepublish": "npm run compile",
-		"compile": "./node_modules/.bin/tsc -p ./",
-		"watch": "./node_modules/.bin/tsc -watch -p ./",
+		"compile": "npx tsc -p ./",
+		"watch": "npx tsc -watch -p ./",
 		"pretest": "npm run compile",
-		"lint": "./node_modules/.bin/eslint src --ext ts",
+		"lint": "npx eslint src --ext ts",
 		"test": "node ./out/test/runTest.js",
 		"package": "vsce package",
 		"publish": "vsce publish"
