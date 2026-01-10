@@ -1,62 +1,75 @@
 {
-  "name": "vscode-spfx-version-pal",
-  "displayName": "SPFx Version Pal",
-  "description": "Shows the SharePoint Framework (SPFx) version in the status bar",
-  "version": "0.0.1",
-  "publisher": "your-publisher-name",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/GuidoZam/vscode-spfx-version-pal.git"
-  },
-  "keywords": [
-    "sharepoint",
-    "spfx",
-    "sharepoint framework",
-    "version",
-    "status bar"
-  ],
-  "engines": {
-    "vscode": "^1.74.0"
-  },
-  "categories": [
-    "Other"
-  ],
-  "activationEvents": [
-    "onStartupFinished"
-  ],
-  "main": "./out/extension.js",
-  "contributes": {
-    "commands": [
-      {
-        "command": "spfxVersionPal.refresh",
-        "title": "Refresh SPFx Version",
-        "category": "SPFx Version Pal"
-      }
-    ]
-  },
-  "scripts": {
-    "vscode:prepublish": "npm run compile",
-    "compile": "./node_modules/.bin/tsc -p ./",
-    "watch": "./node_modules/.bin/tsc -watch -p ./",
-    "pretest": "npm run compile",
-    "lint": "./node_modules/.bin/eslint src --ext ts",
-    "test": "node ./out/test/runTest.js"
-  },
-  "devDependencies": {
-    "@types/glob": "^8.1.0",
-    "@types/mocha": "^10.0.10",
-    "@types/node": "16.x",
-    "@types/semver": "^7.7.1",
-    "@types/vscode": "^1.74.0",
-    "@typescript-eslint/eslint-plugin": "^5.59.1",
-    "@typescript-eslint/parser": "^5.59.1",
-    "@vscode/test-electron": "^2.5.2",
-    "eslint": "^8.39.0",
-    "glob": "^8.1.0",
-    "mocha": "^10.8.2",
-    "typescript": "^4.9.4"
-  },
-  "dependencies": {
-    "semver": "^7.5.4"
-  }
+	"name": "vscode-spfx-version-pal",
+	"displayName": "SPFx Version Pal",
+	"description": "Shows the SharePoint Framework (SPFx) version of the current project in the status bar",
+	"version": "0.0.1",
+	"publisher": "guidozam",
+	"license": "MIT",
+	"icon": "assets/icon.png",
+	"galleryBanner": {
+		"color": "#186968",
+		"theme": "light"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/GuidoZam/vscode-spfx-version-pal.git"
+	},
+	"bugs": {
+		"url": "https://github.com/GuidoZam/vscode-spfx-version-pal/issues"
+	},
+	"homepage": "https://github.com/GuidoZam/vscode-spfx-version-pal#readme",
+	"keywords": [
+		"sharepoint",
+		"spfx",
+		"sharepoint framework",
+		"version",
+		"status bar"
+	],
+	"engines": {
+		"vscode": "^1.74.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"activationEvents": [
+		"onStartupFinished"
+	],
+	"main": "./out/extension.js",
+	"contributes": {
+		"commands": [
+			{
+				"command": "spfxVersionPal.refresh",
+				"title": "Refresh SPFx Version",
+				"category": "SPFx Version Pal"
+			}
+		]
+	},
+	"scripts": {
+		"vscode:prepublish": "npm run compile",
+		"compile": "./node_modules/.bin/tsc -p ./",
+		"watch": "./node_modules/.bin/tsc -watch -p ./",
+		"pretest": "npm run compile",
+		"lint": "./node_modules/.bin/eslint src --ext ts",
+		"test": "node ./out/test/runTest.js",
+		"package": "vsce package",
+		"publish": "vsce publish"
+	},
+	"devDependencies": {
+		"@types/glob": "^8.1.0",
+		"@types/mocha": "^10.0.10",
+		"@types/node": "16.x",
+		"@types/semver": "^7.7.1",
+		"@types/vscode": "^1.74.0",
+		"@typescript-eslint/eslint-plugin": "^5.59.1",
+		"@typescript-eslint/parser": "^5.59.1",
+		"@vscode/test-electron": "^2.3.0",
+		"@vscode/vsce": "^2.22.0",
+		"eslint": "^8.39.0",
+		"glob": "^8.1.0",
+		"mocha": "^10.2.0",
+		"typescript": "^4.9.4"
+	},
+	"dependencies": {
+		"semver": "^7.5.4"
+	}
 }

@@ -10,11 +10,11 @@ suite('Extension Test Suite', () => {
 	});
 
 	test('Extension should be present', () => {
-		assert.ok(vscode.extensions.getExtension('your-publisher-name.vscode-spfx-version-pal'));
+		assert.ok(vscode.extensions.getExtension('GuidoZam.vscode-spfx-version-pal'));
 	});
 
 	test('Extension should activate', async () => {
-		const ext = vscode.extensions.getExtension('your-publisher-name.vscode-spfx-version-pal');
+		const ext = vscode.extensions.getExtension('GuidoZam.vscode-spfx-version-pal');
 		await ext?.activate();
 		assert.ok(ext?.isActive);
 	});
