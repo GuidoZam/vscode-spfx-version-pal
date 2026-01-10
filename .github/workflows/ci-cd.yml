@@ -64,7 +64,9 @@ jobs:
     permissions:
       contents: read
       actions: read
-    if: github.event_name == 'release' && github.event.action == 'published'
+    if: |
+      (github.event_name == 'release' && github.event.action == 'published') ||
+      (github.event_name == 'push' && github.ref == 'refs/heads/main' && contains(github.event.head_commit.message, 'Bump version to'))
     
     steps:
     - name: Checkout code
