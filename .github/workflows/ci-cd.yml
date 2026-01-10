@@ -8,6 +8,17 @@ on:
   release:
     types: [ published ]
   workflow_dispatch:
+    inputs:
+      release_version:
+        description: 'Release version to publish'
+        required: false
+        type: string
+  workflow_call:
+    inputs:
+      release_version:
+        description: 'Release version'
+        required: false
+        type: string
 
 jobs:
   test:
@@ -66,6 +77,8 @@ jobs:
       actions: read
     if: |
       (github.event_name == 'release' && github.event.action == 'published') ||
+      (github.event_name == 'workflow_call') ||
+      (github.event_name == 'workflow_dispatch' && github.event.inputs.release_version != '') ||
       (github.event_name == 'push' && github.ref == 'refs/heads/main' && contains(github.event.head_commit.message, 'Bump version to'))
     
     steps:
@@ -89,7 +102,17 @@ jobs:
 
     - name: Update version from tag
       run: |
-        VERSION=${GITHUB_REF#refs/tags/v}
+        if [ "${{ github.event_name }}" == "workflow_call" ] && [ -n "${{ inputs.release_version }}" ]; then
+          VERSION="${{ inputs.release_version }}"
+        elif [ "${{ github.event_name }}" == "workflow_dispatch" ] && [ -n "${{ github.event.inputs.release_version }}" ]; then
+          VERSION="${{ github.event.inputs.release_version }}"
+        elif [ "${{ github.event_name }}" == "release" ]; then
+          VERSION=${GITHUB_REF#refs/tags/v}
+        else
+          # For push events with version bump, extract version from package.json
+          VERSION=$(node -p "require('./package.json').version")
+        fi
+        echo "Using version: $VERSION"
         npm version $VERSION --no-git-tag-version
 
     - name: Package extension
@@ -101,6 +124,7 @@ jobs:
         VSCE_PAT: ${{ secrets.VSCODE_MARKETPLACE_TOKEN }}
 
     - name: Upload VSIX as release asset
+      if: github.event_name == 'release'
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -109,3 +133,11 @@ jobs:
         asset_path: ./*.vsix
         asset_name: vscode-spfx-version-pal-${{ github.event.release.tag_name }}.vsix
         asset_content_type: application/zip
+
+    - name: Upload VSIX as artifact
+      if: github.event_name != 'release'
+      uses: actions/upload-artifact@v4
+      with:
+        name: vscode-spfx-version-pal-vsix
+        path: '*.vsix'
+        retention-days: 30

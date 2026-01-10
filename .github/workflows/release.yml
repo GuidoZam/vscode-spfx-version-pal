@@ -73,3 +73,20 @@ jobs:
           See the [changelog](CHANGELOG.md) for detailed changes.
         draft: false
         prerelease: ${{ github.event.inputs.prerelease }}
+
+    - name: Trigger CI/CD workflow
+      if: github.event.inputs.trigger_cicd == 'true'
+      uses: actions/github-script@v7
+      with:
+        github-token: ${{ secrets.PAT_TOKEN || secrets.GITHUB_TOKEN }}
+        script: |
+          await github.rest.actions.createWorkflowDispatch({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            workflow_id: 'ci-cd.yml',
+            ref: 'main',
+            inputs: {
+              release_version: '${{ github.event.inputs.version }}'
+            }
+          });
+          console.log('Triggered CI/CD workflow with release version: ${{ github.event.inputs.version }}');
