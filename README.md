@@ -8,9 +8,12 @@ Examples of the extension in action:
 
 ![SPFx Version Pal Screenshot 01](assets/screenshot_01.png)
 
+
 ![SPFx Version Pal Screenshot 02](assets/screenshot_02.png)
 
+
 ![SPFx Version Pal Screenshot 03](assets/screenshot_03.png)
+
 
 ![SPFx Version Pal Screenshot 04](assets/screenshot_04.png)
 
