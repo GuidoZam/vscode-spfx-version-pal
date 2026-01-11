@@ -38,11 +38,14 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20'
           cache: 'npm'
       
       - name: Install dependencies
         run: npm ci
+      
+      - name: Update vsce to latest compatible version
+        run: npm install @vscode/vsce@latest --save-dev
       
       - name: Run linting
         run: npm run lint
