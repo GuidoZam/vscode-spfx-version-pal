@@ -51,6 +51,7 @@
 		"pretest": "npm run compile",
 		"lint": "npx eslint src --ext ts",
 		"test": "node ./out/test/runTest.js",
+		"test:ci": "xvfb-run -a node ./out/test/runTest.js",
 		"package": "vsce package",
 		"publish": "vsce publish"
 	},

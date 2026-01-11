@@ -18,11 +18,19 @@ async function main() {
 		await runTests({ 
 			extensionDevelopmentPath, 
 			extensionTestsPath,
-			// Add some options to reduce noise
+			// Add options for better headless support
 			launchArgs: [
 				'--disable-extensions',
 				'--disable-gpu',
-				'--disable-dev-shm-usage'
+				'--disable-dev-shm-usage',
+				'--no-sandbox',
+				'--disable-web-security',
+				'--disable-setuid-sandbox',
+				'--disable-background-timer-throttling',
+				'--disable-backgrounding-occluded-windows',
+				'--disable-renderer-backgrounding',
+				'--disable-features=TranslateUI',
+				'--disable-default-apps'
 			]
 		});
 
