@@ -2,6 +2,20 @@
 
 All notable changes to the "SPFx Version Pal" extension will be documented in this file.
 
+## [0.0.5] - 2026-02-08
+
+### Changed
+- Updated gallery banner with white text color for better contrast
+- Enhanced CI/CD workflows with improved test compilation steps
+- Updated npm scripts for better package management (renamed to vsce:package and vsce:publish)
+- Improved workflow triggers to focus on dev branch for testing
+
+### Technical
+- Updated .gitignore to exclude dist folder and build artifacts
+- Refined GitHub Actions workflow configurations
+- Enhanced test compilation process in CI/CD pipelines
+- Removed distributed files from source control (dist folder cleanup)
+
 ## [0.0.4] - 2026-01-19
 
 ### Fixed
