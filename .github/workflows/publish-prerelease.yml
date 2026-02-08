@@ -1,39 +1,33 @@
-name: Test Extension
+name: Publish Pre-release
 
 on:
   push:
-    branches: [ dev, pre-release, main ]
-  pull_request:
-    branches: [ dev, pre-release, main ]
+    branches: [ pre-release ]
   workflow_dispatch:
 
 jobs:
-  test:
+  publish-prerelease:
     runs-on: ubuntu-latest
-    
-    strategy:
-      matrix:
-        node-version: [20.x]
     
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
       
-      - name: Setup Node.js ${{ matrix.node-version }}
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: '20.x'
           cache: 'npm'
       
       - name: Install dependencies
         run: npm ci
-      
+
       - name: Run linting
         run: npm run lint
-      
+
       - name: Compile TypeScript
         run: npm run compile
-      
+
       - name: Compile tests
         run: npm run compile-tests
 
@@ -47,5 +41,10 @@ jobs:
         env:
           DISPLAY: ':99.0'
       
-      - name: Test packaging
-        run: npm run package
+      - name: Package extension (pre-release)
+        run: npm run vsce:package:prerelease
+      
+      - name: Publish to VS Code Marketplace (pre-release)
+        run: npm run publish:prerelease
+        env:
+          VSCE_PAT: ${{ secrets.PERSONAL_TOKEN }}
