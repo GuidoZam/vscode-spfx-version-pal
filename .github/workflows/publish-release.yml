@@ -24,10 +24,13 @@ jobs:
       
       - name: Run linting
         run: npm run lint
-      
+
       - name: Compile TypeScript
         run: npm run compile
-      
+
+      - name: Compile tests
+        run: npm run compile-tests
+
       - name: Setup headless display
         run: |
           sudo apt-get update
@@ -39,9 +42,9 @@ jobs:
           DISPLAY: ':99.0'
       
       - name: Package extension
-        run: npm run package
+        run: npm run vsce:package
       
       - name: Publish to VS Code Marketplace
-        run: npm run publish
+        run: npm run vsce:publish
         env:
           VSCE_PAT: ${{ secrets.PERSONAL_TOKEN }}
