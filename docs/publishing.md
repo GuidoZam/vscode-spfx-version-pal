@@ -58,12 +58,15 @@ Before you can use the publishing workflow, you need to set up the following:
 1. **Checkout**: Gets the latest code
 2. **Setup**: Installs Node.js and dependencies
 3. **Quality Checks**: Runs linting and tests
-4. **Version Bump**: Automatically increments the version number
-5. **Build**: Compiles the TypeScript code
-6. **Package**: Creates a `.vsix` file
-7. **Publish**: (if not dry run) Publishes to VS Code Marketplace
-8. **Git Operations**: (if not dry run) Commits version bump and creates a tag
-9. **GitHub Release**: (if not dry run) Creates a GitHub release with the `.vsix` file
+4. **Preview Control**: Sets the `preview` field in `package.json` appropriately:
+   - **Pre-release workflow**: Sets `preview: true`
+   - **Release workflow**: Sets `preview: false`
+5. **Version Bump**: Automatically increments the version number
+6. **Build**: Compiles the TypeScript code
+7. **Package**: Creates a `.vsix` file
+8. **Publish**: (if not dry run) Publishes to VS Code Marketplace
+9. **Git Operations**: (if not dry run) Commits version bump and creates a tag
+10. **GitHub Release**: (if not dry run) Creates a GitHub release with the `.vsix` file
 
 ### Dry Run Mode
 
@@ -80,6 +83,33 @@ The workflow automatically manages version numbers:
 - Updates `package.json` and `package-lock.json`
 - Creates a Git tag
 - Commits the changes back to the main branch
+
+## Preview Control
+
+The extension supports both preview and stable releases through the `preview` field in `package.json`:
+
+- **Preview releases** (pre-release workflow): Extensions marked as preview appear with a "Preview" badge in the marketplace
+- **Stable releases** (release workflow): Extensions without the preview flag are considered stable
+
+### Manual Preview Control
+
+You can also manually control the preview setting using npm scripts:
+
+```bash
+# Set preview to true
+npm run set-preview:true
+
+# Set preview to false
+npm run set-preview:false
+
+# Or pass the value directly
+npm run set-preview true
+npm run set-preview false
+```
+
+The workflows automatically set this value:
+- **Pre-release workflow**: Sets `preview: true` before packaging
+- **Release workflow**: Sets `preview: false` before packaging
 
 ## Troubleshooting
 

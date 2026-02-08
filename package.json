@@ -6,6 +6,7 @@
 	"publisher": "guidozam",
 	"license": "MIT",
 	"icon": "assets/icon.png",
+	"preview": false,
 	"galleryBanner": {
 		"color": "#186968",
 		"textColor": "#ffffff",
@@ -57,6 +58,9 @@
 		"lint": "npx eslint src --ext ts",
 		"test": "node ./out/test/runTest.js",
 		"test:ci": "xvfb-run -a node ./out/test/runTest.js",
+		"set-preview": "node scripts/set-preview.js",
+		"set-preview:true": "node scripts/set-preview.js true",
+		"set-preview:false": "node scripts/set-preview.js false",
 		"vsce:package": "vsce package",
 		"vsce:package:prerelease": "vsce package --pre-release",
 		"vsce:publish": "vsce publish",
