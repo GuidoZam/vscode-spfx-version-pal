@@ -2,6 +2,24 @@
 
 All notable changes to the "SPFx Version Pal" extension will be documented in this file.
 
+## [0.0.4] - 2026-01-19
+
+### Fixed
+- Fixed "Cannot find module 'semver'" error when extension is installed from marketplace
+- Dependencies are now properly bundled with the extension
+
+### Changed
+- Migrated from TypeScript compilation to webpack bundling for production builds
+- Updated build process to bundle all dependencies into a single output file
+- Changed main entry point from `./out/extension.js` to `./dist/extension.js`
+
+### Technical
+- Added webpack, ts-loader, and webpack-cli as development dependencies
+- Created webpack.config.js for proper bundling configuration
+- Updated npm scripts to use webpack for building and packaging
+- Updated .vscodeignore to exclude source files but include bundled distribution files
+- Added separate compilation pipeline for tests while using webpack for production
+
 ## [0.0.3] - 2026-01-17
 
 ### Added
