@@ -41,6 +41,9 @@ jobs:
         env:
           DISPLAY: ':99.0'
       
+      - name: Set preview to true
+        run: npm run set-preview:true
+      
       - name: Package extension (pre-release)
         run: npm run vsce:package:prerelease
       

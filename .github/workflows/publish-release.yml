@@ -41,6 +41,9 @@ jobs:
         env:
           DISPLAY: ':99.0'
       
+      - name: Set preview to false
+        run: npm run set-preview:false
+      
       - name: Package extension
         run: npm run vsce:package
       
