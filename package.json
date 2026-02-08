@@ -54,7 +54,9 @@
 		"test": "node ./out/test/runTest.js",
 		"test:ci": "xvfb-run -a node ./out/test/runTest.js",
 		"package": "vsce package",
-		"publish": "vsce publish"
+		"package:prerelease": "vsce package --pre-release",
+		"publish": "vsce publish",
+		"publish:prerelease": "vsce publish --pre-release"
 	},
 	"devDependencies": {
 		"@types/glob": "^8.1.0",
