@@ -49,16 +49,17 @@
 		"vscode:prepublish": "npm run package",
 		"compile": "webpack",
 		"watch": "webpack --watch",
+		"package": "webpack --mode production --devtool hidden-source-map",
 		"compile-tests": "npx tsc -p . --outDir out",
 		"watch-tests": "npx tsc -p . --outDir out --watch",
 		"pretest": "npm run compile-tests && npm run compile && npm run lint",
 		"lint": "npx eslint src --ext ts",
-		"test": "node ./out/test/runTest.js",
-		"test:ci": "xvfb-run -a node ./out/test/runTest.js",
-		"package": "vsce package",
-		"package:prerelease": "vsce package --pre-release",
-		"publish": "vsce publish",
-		"publish:prerelease": "vsce publish --pre-release"
+		"test": "node ./dist/test/runTest.js",
+		"test:ci": "xvfb-run -a node ./dist/test/runTest.js",
+		"vsce:package": "vsce package",
+		"vsce:package:prerelease": "vsce package --pre-release",
+		"vsce:publish": "vsce publish",
+		"vsce:publish:prerelease": "vsce publish --pre-release"
 	},
 	"devDependencies": {
 		"@types/glob": "^8.1.0",

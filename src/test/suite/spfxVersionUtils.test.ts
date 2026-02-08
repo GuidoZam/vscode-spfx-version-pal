@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import * as assert from 'assert';
 import { SPFxVersionUtils } from '../../spfxVersionUtils';
 

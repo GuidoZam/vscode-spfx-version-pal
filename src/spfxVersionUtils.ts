@@ -63,7 +63,7 @@ export class SPFxVersionUtils {
      * Clean version string by removing prefixes and extracting semantic version
      */
     static cleanVersionString(version: string): string | null {
-        if (!version) return null;
+        if (!version) { return null; }
         
         try {
             // Try semver clean first
