@@ -493,3 +493,7 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+
+dist/
+dist/extension.js
+dist/extension.js.map
