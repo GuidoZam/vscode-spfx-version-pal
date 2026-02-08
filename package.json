@@ -8,6 +8,7 @@
 	"icon": "assets/icon.png",
 	"galleryBanner": {
 		"color": "#186968",
+		"textColor": "#ffffff",
 		"theme": "light"
 	},
 	"repository": {
