@@ -2,9 +2,9 @@ name: Test Extension
 
 on:
   push:
-    branches: [ dev, pre-release, main ]
+    branches: [ dev ]
   pull_request:
-    branches: [ dev, pre-release, main ]
+    branches: [ dev ]
   workflow_dispatch:
 
 jobs:
