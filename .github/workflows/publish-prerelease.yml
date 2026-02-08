@@ -45,6 +45,6 @@ jobs:
         run: npm run vsce:package:prerelease
       
       - name: Publish to VS Code Marketplace (pre-release)
-        run: npm run publish:prerelease
+        run: npm run vsce:publish:prerelease
         env:
           VSCE_PAT: ${{ secrets.PERSONAL_TOKEN }}
