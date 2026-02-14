@@ -2,6 +2,24 @@
 
 All notable changes to the "SPFx Version Pal" extension will be documented in this file.
 
+## [0.1.1] - 2026-02-14
+
+### Changed
+- Simplified gallery banner configuration by removing custom colors
+- Extension now uses default VS Code marketplace theme styling
+
+### Technical
+- Updated gallery banner to use light theme without custom color overrides
+- Improved marketplace presentation with cleaner styling approach
+
+## [0.1.0] - 2026-02-13
+
+### Changed
+Nothing here.
+
+### Technical
+Nothing here.
+
 ## [0.0.5] - 2026-02-08
 
 ### Changed
