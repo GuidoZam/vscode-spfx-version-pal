@@ -25,6 +25,13 @@ export class SPFxVersionProvider {
             this.setupFileWatcher();
             this.updateVersion();
         });
+
+        // Listen to configuration changes
+        vscode.workspace.onDidChangeConfiguration((e) => {
+            if (e.affectsConfiguration('spfxVersionPal.statusBarDisplay')) {
+                this.updateVersion();
+            }
+        });
     }
 
     private setupFileWatcher() {
@@ -52,7 +59,17 @@ export class SPFxVersionProvider {
         const spfxInfo = await this.detectSPFxVersion();
         
         if (spfxInfo) {
-            this.statusBarItem.text = `$(milestone) SPFx ${spfxInfo.version}`;
+            // Get the display mode from configuration
+            const config = vscode.workspace.getConfiguration('spfxVersionPal');
+            const displayMode = config.get<string>('statusBarDisplay', 'full');
+            
+            // Set text based on display mode
+            if (displayMode === 'minimal') {
+                this.statusBarItem.text = `$(milestone)`;
+            } else {
+                this.statusBarItem.text = `$(milestone) SPFx ${spfxInfo.version}`;
+            }
+            
             this.statusBarItem.tooltip = `SharePoint Framework v${spfxInfo.version}\nProject: ${spfxInfo.projectName}${spfxInfo.relativePath ? `\nLocation: ${spfxInfo.relativePath}` : ''}\nClick to refresh`;
             this.statusBarItem.show();
         } else {
