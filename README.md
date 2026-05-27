@@ -59,20 +59,6 @@ This extension doesn't contribute any VS Code settings.
 - The extension relies on package.json dependencies to detect SPFx version
 - If SPFx dependencies are not explicitly listed, the version may not be detected
 
-## Release Notes
-
-### 0.0.1
-
-Initial release of SPFx Version Pal
-
-- Basic SPFx version detection
-- Status bar display
-- Auto-refresh on file changes
-
-## Contributing
-
-Feel free to contribute to this project by submitting issues or pull requests.
-
 ## License
 
 See the [LICENSE](LICENSE) file for details.

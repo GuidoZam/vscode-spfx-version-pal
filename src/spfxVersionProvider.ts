@@ -6,6 +6,7 @@ import { SPFxVersionUtils } from './spfxVersionUtils';
 export class SPFxVersionProvider {
     private statusBarItem: vscode.StatusBarItem;
     private fileWatcher: vscode.FileSystemWatcher | undefined;
+    private updateRequestId = 0;
 
     constructor(private context: vscode.ExtensionContext) {
         // Create status bar item
@@ -21,10 +22,21 @@ export class SPFxVersionProvider {
         this.setupFileWatcher();
 
         // Listen to workspace folder changes
-        vscode.workspace.onDidChangeWorkspaceFolders(() => {
+        const workspaceFoldersChangeDisposable = vscode.workspace.onDidChangeWorkspaceFolders(() => {
             this.setupFileWatcher();
             this.updateVersion();
         });
+        this.context.subscriptions.push(workspaceFoldersChangeDisposable);
+
+        // Listen to configuration changes
+        const configurationChangeDisposable = vscode.workspace.onDidChangeConfiguration((e) => {
+            // React to any setting change in the extension section, including reset-to-default transitions.
+            if (e.affectsConfiguration('spfxVersionPal')) {
+                console.log('[SPFx Version Pal] Configuration changed, updating version display');
+                this.updateVersion();
+            }
+        });
+        this.context.subscriptions.push(configurationChangeDisposable);
     }
 
     private setupFileWatcher() {
@@ -49,11 +61,34 @@ export class SPFxVersionProvider {
     }
 
     private async updateVersion() {
+        const requestId = ++this.updateRequestId;
         const spfxInfo = await this.detectSPFxVersion();
+
+        // Ignore stale async updates so the latest config selection always wins.
+        if (requestId !== this.updateRequestId) {
+            return;
+        }
         
         if (spfxInfo) {
-            this.statusBarItem.text = `$(milestone) SPFx ${spfxInfo.version}`;
+            // Get the display mode from configuration
+            const config = vscode.workspace.getConfiguration('spfxVersionPal');
+            const displayMode = config.get<string>('statusBarDisplay', 'full');
+            
+            console.log(`[SPFx Version Pal] Display mode: ${displayMode}`);
+            
+            // Set text based on display mode
+            if (displayMode === 'minimal') {
+                this.statusBarItem.text = `$(milestone)`;
+                console.log('[SPFx Version Pal] Status bar set to minimal mode');
+            } else {
+                this.statusBarItem.text = `$(milestone) SPFx ${spfxInfo.version}`;
+                console.log(`[SPFx Version Pal] Status bar set to full mode: ${spfxInfo.version}`);
+            }
+            
             this.statusBarItem.tooltip = `SharePoint Framework v${spfxInfo.version}\nProject: ${spfxInfo.projectName}${spfxInfo.relativePath ? `\nLocation: ${spfxInfo.relativePath}` : ''}\nClick to refresh`;
+            
+            // Force a visual refresh by hiding and showing the status bar
+            this.statusBarItem.hide();
             this.statusBarItem.show();
         } else {
             this.statusBarItem.hide();

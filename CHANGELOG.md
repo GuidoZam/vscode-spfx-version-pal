@@ -2,6 +2,27 @@
 
 All notable changes to the "SPFx Version Pal" extension will be documented in this file.
 
+## [0.1.3] - 2026-05-27
+
+### Added
+- New configuration option `spfxVersionPal.statusBarDisplay` to control status bar content
+- Support for minimal status bar display mode (icon only)
+- Support for full status bar display mode (icon and text)
+
+### Changed
+- Status bar now respects user preference for display mode
+- Improved configuration change handling with visual refresh
+
+### Technical
+- Added configuration listener for real-time status bar updates
+- Implemented display mode toggle between full and minimal views
+- Enhanced status bar rendering with forced visual refresh on config changes
+
+## [0.1.2] - 2026-03-15
+
+### Changed
+- Updated README documentation with improved descriptions and examples
+
 ## [0.1.1] - 2026-02-14
 
 ### Changed

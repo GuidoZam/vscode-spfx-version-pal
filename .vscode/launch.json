@@ -5,9 +5,8 @@
             "name": "Run Extension",
             "type": "extensionHost",
             "request": "launch",
-            "args": [
-                "--extensionDevelopmentPath=${workspaceFolder}"
-            ]
+            "args": ["--extensionDevelopmentPath=${workspaceFolder}"],
+            "preLaunchTask": "npm: compile"
         },
         {
             "name": "Extension Tests",
@@ -16,7 +15,8 @@
             "args": [
                 "--extensionDevelopmentPath=${workspaceFolder}",
                 "--extensionTestsPath=${workspaceFolder}/out/test/suite/index"
-            ]
+            ],
+            "preLaunchTask": "npm: compile"
         }
     ]
 }
